@@ -22,10 +22,15 @@ public class Product {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "products")
+    private List<Cart> carts;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "products")
     private List<Orders> orders;
 
-    public Category getCategory() {
-        return category;
+
+    public void addCart( Cart cart) {
+        carts.add(cart);
     }
 
     public void setCategory(Category category) {
