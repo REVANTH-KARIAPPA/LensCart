@@ -15,7 +15,7 @@ public class Product {
     private String productName;
     private String prize;
 
-
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "category_id",referencedColumnName = "categoryId")
     private Category category;

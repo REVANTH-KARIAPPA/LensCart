@@ -19,6 +19,9 @@ public class Orders {
             inverseJoinColumns = @JoinColumn(name = "product_productId"))
     private List<Product> products;
 
+    @ManyToOne
+    private Users users;
+
 
     public void putProduct(Product product) {
         products.add(product);

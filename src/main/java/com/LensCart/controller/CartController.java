@@ -35,5 +35,10 @@ public class CartController {
         cartService.enrollCart(cartId,productId);
 
     }
+    @PutMapping("/{cartId}/user/{userId}")
+    public void enrollUser(@PathVariable int cartId, @PathVariable int userId){
+        cartService.enrollUser(cartId,userId);
+
+    }
 
 }

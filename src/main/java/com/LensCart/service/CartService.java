@@ -3,8 +3,10 @@ package com.LensCart.service;
 
 import com.LensCart.Repository.CartRepository;
 import com.LensCart.Repository.ProductRepository;
+import com.LensCart.Repository.UserRepository;
 import com.LensCart.entity.Cart;
 import com.LensCart.entity.Product;
+import com.LensCart.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ public class CartService {
     CartRepository cartRepository;
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public void addCart(Cart cart){
         cartRepository.save(cart);
@@ -35,4 +39,16 @@ public class CartService {
         cartRepository.save(cart);
         productRepository.save(product);
     }
+
+    public void enrollUser(int cartId, int userId) {
+        Cart cart= cartRepository.findById(cartId).get();
+        Users users= userRepository.findById(userId).get();
+        cart.setUser(users);
+        cartRepository.save(cart);
+        users.setCart(cart);
+        userRepository.save(users);
+
+
+    }
+
 }
