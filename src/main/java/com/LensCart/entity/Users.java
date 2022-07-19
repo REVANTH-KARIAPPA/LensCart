@@ -15,7 +15,7 @@ public class Users {
     private Integer id;
     private String name;
     private String password;
-    private String role;
+    private String role="CUSTOMER";
 
     @JsonIgnore
     @OneToOne(mappedBy = "user")

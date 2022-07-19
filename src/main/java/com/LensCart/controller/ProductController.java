@@ -1,11 +1,13 @@
 package com.LensCart.controller;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import com.LensCart.entity.Product;
 import com.LensCart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,9 +23,10 @@ public class ProductController {
         return productService.getAllProducts();
     }
     @GetMapping("/{pid}")
-    public Optional<Product> getProduct(@PathVariable Integer pid)
+    public ResponseEntity<Product> getProduct(@PathVariable Integer pid)
     {
-        return productService.getProductById(pid);
+        Product product=productService.getProductById(pid);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
 

@@ -1,5 +1,6 @@
 package com.LensCart.service;
 
+import com.LensCart.Exception.ProductNotFoundException;
 import com.LensCart.Repository.CategoryRepository;
 import com.LensCart.Repository.ProductRepository;
 import com.LensCart.entity.Category;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -23,7 +25,13 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
     public  void deleteCategory(int id){
-        categoryRepository.deleteById(id);
+        Optional<Category> category = categoryRepository.findById(id);
+        if(category.isPresent()){
+             categoryRepository.deleteById(id);
+        }
+        else {
+            throw new ProductNotFoundException("Product with productId "+id+" is not found");
+        }
     }
 
     public void enrollCategory(int categoryId, int productId) {

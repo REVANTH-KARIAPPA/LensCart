@@ -1,5 +1,6 @@
 package com.LensCart.service;
 
+import com.LensCart.Exception.ProductNotFoundException;
 import com.LensCart.Repository.ProductRepository;
 import com.LensCart.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class ProductService {
         productRepository.save(product);
     }
     public void updateProduct(Product product, int id){
-        Optional<Product> optionalProduct= getProductById(id);
-        Product myProduct=optionalProduct.get();
+        Product optionalProduct= getProductById(id);
+        Product myProduct=optionalProduct;
         if(myProduct!=null) {
             myProduct.setProductName(product.getProductName());
             myProduct.setPrize(product.getPrize());
@@ -27,13 +28,25 @@ public class ProductService {
     }
     public void deleteProduct(int id)
     {
-        productRepository.deleteById(id);
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent()){
+            productRepository.deleteById(id);
+        }
+        else {
+            throw new ProductNotFoundException("Product with productId "+id+"\n is not found");
+        }
     }
     public ArrayList<Product> getAllProducts(){
         return new ArrayList<>(productRepository.findAll());
     }
-    public Optional<Product> getProductById(int id){
-        return productRepository.findById(id);
+    public Product getProductById(int id){
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent()){
+            return productRepository.findById(id).get();
+        }
+        else {
+            throw new ProductNotFoundException("Product with productId "+id+" is not found");
+        }
     }
 
 }

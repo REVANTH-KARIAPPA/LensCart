@@ -1,6 +1,7 @@
 package com.LensCart.service;
 
 
+import com.LensCart.Exception.UserNotFoundException;
 import com.LensCart.Repository.CartRepository;
 import com.LensCart.Repository.ProductRepository;
 import com.LensCart.Repository.UserRepository;
@@ -42,13 +43,18 @@ public class CartService {
 
     public void enrollUser(int cartId, int userId) {
         Cart cart= cartRepository.findById(cartId).get();
-        Users users= userRepository.findById(userId).get();
-        cart.setUser(users);
-        cartRepository.save(cart);
-        users.setCart(cart);
-        userRepository.save(users);
+        Users myUser= cart.getUser();
+        if(myUser!=null) {
 
-
+            Users users = userRepository.findById(userId).get();
+            cart.setUser(users);
+            cartRepository.save(cart);
+            users.setCart(cart);
+            userRepository.save(users);
+        }
+        else{
+            throw new UserNotFoundException("user is already enrolled to this cart");
+        }
     }
 
 }

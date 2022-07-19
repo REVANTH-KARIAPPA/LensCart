@@ -3,6 +3,8 @@ package com.LensCart.controller;
 import com.LensCart.entity.Users;
 import com.LensCart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +23,18 @@ public class UserController {
         return userService.getAllUsers();
     }
     @GetMapping("/{id}")
-    public Optional<Users> getUserById(@PathVariable int id){
-        return userService.getUserById(id);
+    public ResponseEntity<Users> getUserById(@PathVariable int id){
+        Users users=userService.getUserById(id);
+        return new ResponseEntity<>(users,HttpStatus.OK);
     }
     @PostMapping("/create")
     public void createUser(@RequestBody Users user){
         userService.createUser(user);
     }
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable int id){
+    public ResponseEntity<String> deleteUser(@PathVariable int id){
         userService.deleteUser(id);
+        return new ResponseEntity<>("User Deleted Successfully", HttpStatus.OK);
     }
 
 }

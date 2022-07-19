@@ -1,5 +1,6 @@
 package com.LensCart.service;
 
+import com.LensCart.Exception.UserNotFoundException;
 import com.LensCart.Repository.UserRepository;
 import com.LensCart.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,25 @@ public class UserService {
     public List<Users> getAllUsers(){
         return new ArrayList<>(userRepository.findAll());
     }
-    public Optional<Users> getUserById(int id){
-        return userRepository.findById(id);
+    public Users getUserById(int id){
+        Optional<Users> users=userRepository.findById(id);
+        if(users.isPresent()){
+
+            return userRepository.findById(id).get();
+        }
+        else{
+            throw new UserNotFoundException("Get Operation failed \n No User Found with id : "+id);
+        }
     }
     public void deleteUser(int id)
     {
-        userRepository.deleteById(id);
+        Optional<Users> users=userRepository.findById(id);
+        if(users.isPresent()){
+            userRepository.deleteById(id);
+        }
+        else{
+            throw new UserNotFoundException("Delete Operation failed \n No User Found with id : "+id);
+        }
     }
     public void createUser(Users user){
         userRepository.save(user);
